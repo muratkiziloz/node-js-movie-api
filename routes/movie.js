@@ -20,6 +20,7 @@ router.post('/', (req, res, next) => {
  // });
 
 
+
  movie.save((err, data) => {
    if (err)
       res.json(err);
