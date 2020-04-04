@@ -1,4 +1,4 @@
-# node-egitimi-movie-api
+# node-Js-movie-api
 Udemy üzerinde yayınlanan ["Sıfırdan Her Yönüyle Node.JS"](http://bit.ly/ndjsm) adlı eğitim setinde "Express ve MongoDB ile Restful API Geliştirme Projesi" bölümünde kullanılan repodur.
 
 
