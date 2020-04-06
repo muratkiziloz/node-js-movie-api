@@ -55,8 +55,23 @@ app.use((err, req, res, next) => {
   res.json({ error:{ message: err.message, code: err.code } });
 });
 
-app.listen(80, function () {
-  console.log('CORS-enabled web server listening on port 80')
+const whitelist = ['https://node-filmrafi-api.herokuapp.com/', 'http://localhost:3000'];
+const corsOptionsDelegate = function (req, callback) {
+  let corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
+app.get('/', cors(corsOptionsDelegate), function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'})
 });
+
+// app.listen(80, function () {
+//   console.log('CORS-enabled web server listening on port 80')
+// });
 
 module.exports = app;
