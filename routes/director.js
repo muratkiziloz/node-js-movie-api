@@ -136,8 +136,22 @@ router.put('/:director_id', (req, res, next) => {
   })
 });
 
+// id ye göre yönetmen silme
+router.delete('/:director_id', (req, res, next) => {
+  const promise = Director.findByIdAndRemove(
+      req.params.director_id,
+      req.body
+  );
 
+  promise.then((director) => {
+    if (!director)
+      next({ message: 'Böyle bir kayıt bulunamadı', code: 99 });
 
+    res.json({ status: 1 })
+  }).catch((err) => {
+    res.json(err)
+  })
+});
 
 
 
