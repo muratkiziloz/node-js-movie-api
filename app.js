@@ -55,23 +55,21 @@ app.use((err, req, res, next) => {
   res.json({ error:{ message: err.message, code: err.code } });
 });
 
-const whitelist = ['https://node-filmrafi-api.herokuapp.com']
-const corsOptionsDelegate = function (req, callback) {
-  let corsOptions;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false } // disable CORS for this request
-  }
-  callback(null, corsOptions) // callback expects two parameters: error and options
+
+const corsOptions = {
+  origin: 'https://node-filmrafi-api.herokuapp.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-app.get('/', cors(corsOptionsDelegate), function (req, res, next) {
-  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'})
+// app.get('/products/:id', cors(corsOptions), function (req, res, next) {
+//   res.json({msg: 'This is CORS-enabled for only example.com.'})
+// });
+
+app.get("*", function(req, res) {
+  res.send("sms app server status: RUNNING");
 });
 
-app.listen('https://node-filmrafi-api.herokuapp.com/', () => {
-  console.log('CORS-enabled web server listening on port 80')
-});
+
+
 
 module.exports = app;
