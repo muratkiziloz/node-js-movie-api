@@ -7,7 +7,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const movie = require('./routes/movie');
 const director = require('./routes/director');
-
+const user = require('./routes/user');
+const cors = require('cors');
 const app = express();
 
 //db connection
@@ -25,7 +26,7 @@ const verifyToken = require('./middleware/verify-token');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +37,7 @@ app.use('/', indexRouter);
 app.use('/api', verifyToken);
 app.use('/api/movies', movie);
 app.use('/api/directors', director);
+app.use('/api/users', user);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -51,6 +53,10 @@ app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
   res.json({ error:{ message: err.message, code: err.code } });
+});
+
+app.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
 });
 
 module.exports = app;
