@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const movie = require('./routes/movie');
 const director = require('./routes/director');
 const user = require('./routes/user');
+const cors = require('cors');
 const app = express();
 
 //db connection
@@ -19,6 +20,7 @@ const config = require('./config');
 app.set('api_secret_key', config.api_secret_key);
 
 // Middleware
+app.use(cors());
 const verifyToken = require('./middleware/verify-token');
 
 
