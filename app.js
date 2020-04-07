@@ -2,9 +2,10 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
+const index = require('./routes/index');
 const movie = require('./routes/movie');
 const director = require('./routes/director');
 const user = require('./routes/user');
@@ -12,7 +13,6 @@ const user = require('./routes/user');
 const app = express();
 
 //db connection
-
 const db = require('./helper/db')();
 
 // config
@@ -20,31 +20,18 @@ const config = require('./config');
 app.set('api_secret_key', config.api_secret_key);
 
 // Middleware
-const cors = require('cors');
-app.use(cors());
 const verifyToken = require('./middleware/verify-token');
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-
-app.use('/', indexRouter);
+app.use('/', index);
 app.use('/api', verifyToken);
 app.use('/api/movies', movie);
 app.use('/api/directors', director);
