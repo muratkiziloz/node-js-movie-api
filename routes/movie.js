@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
 
 //Models
 
 const Movie = require('../models/Movie');
-app.use(cors({origin: 'http://127.0.0.1:8081'}));
+
 // get method // tüm filmleri çekmek için find kısmı boş bırakıldığında tüm veriler gelir
 router.get('/', (req, res) => {
     const promise = Movie.aggregate([
