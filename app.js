@@ -8,7 +8,7 @@ const indexRouter = require('./routes/index');
 const movie = require('./routes/movie');
 const director = require('./routes/director');
 const user = require('./routes/user');
-const bodyParser = require('body-parser');
+
 const app = express();
 
 //db connection
@@ -21,12 +21,11 @@ app.set('api_secret_key', config.api_secret_key);
 
 // Middleware
 const cors = require('cors');
-app.use(cors({
-  'origin': '*',
-  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  'preflightContinue': false
-}));
+app.use(cors());
 const verifyToken = require('./middleware/verify-token');
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +35,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 app.use('/', indexRouter);
 app.use('/api', verifyToken);
