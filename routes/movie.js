@@ -7,7 +7,6 @@ const Movie = require('../models/Movie');
 
 // get method // tüm filmleri çekmek için find kısmı boş bırakıldığında tüm veriler gelir
 router.get('/', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
     const promise = Movie.aggregate([
         {
             $lookup: {

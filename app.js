@@ -24,6 +24,12 @@ const cors = require('cors');
 app.use(cors());
 const verifyToken = require('./middleware/verify-token');
 
+app.get('/', function (req, res) {
+
+  res.header("Access-Control-Allow-Origin", "*");
+  res.send('hello world')
+})
+
 
 
 // view engine setup
